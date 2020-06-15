@@ -18,7 +18,8 @@ namespace PaymentGateway{
 
         public Startup(IConfiguration configuration) => Configuration = configuration;
         public void ConfigureServices(IServiceCollection services){
-            services.AddDbContext<PaymentContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));
+            services.AddDbContext<PaymentContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));            services.AddDbContext<PaymentContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));
+            services.AddDbContext<ShopperContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }

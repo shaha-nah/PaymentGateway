@@ -2,14 +2,20 @@ using System.Collections.Generic;
 using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.Models;
 using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace PaymentGateway.Controllers{
     [Route("api/PaymentGateway")]
     [ApiController]
     public class PaymentsController : ControllerBase{
-        private readonly PaymentContext _context;
+        private readonly PaymentContext _paymentContext;
+        private readonly ShopperContext _shopperContext;
 
-        public PaymentsController(PaymentContext context) => _context = context;
+        public PaymentsController(PaymentContext paymentContext, ShopperContext shopperContext){
+            _paymentContext = paymentContext;
+            _shopperContext = shopperContext;
+        }
+  
 
         public string maskCardNumber(string cardNumber){
             string masked = "";
@@ -23,12 +29,27 @@ namespace PaymentGateway.Controllers{
             return masked;
         }
 
+        public string bankSimulation(string cardNumber, double amount){
+           Shopper shopper = (  from s in _shopperContext.Shopper
+                                where s.cardNumber == cardNumber
+                                select s).FirstOrDefault<Shopper>();
+           if (shopper == null){
+               return "unsuccessful";
+           }
+           else{
+               if (shopper.credit - amount < 0){
+                   return "unsuccessful";
+               }
+           }
+           return "successful";
+        }
+
         //GET: /api/paymentgateway/n
         [HttpGet("{id}")]
         public ActionResult<IEnumerable<string>> GetPayment(int id){
-            var payment = _context.Payment.Find(id);
+            var payment = _paymentContext.Payment.Find(id);
             if (payment == null){
-                return new string[] {"Incorrect identifier. Please try again!"};
+                return new string[] {"No payments are associated with this ID!"};
             }
             string cardNumber = maskCardNumber(payment.cardNumber);
 
@@ -38,16 +59,9 @@ namespace PaymentGateway.Controllers{
         //POST: /api/paymentgateway
         [HttpPost]
         public ActionResult<IEnumerable<string>> PostPayment(Payment payment){
-            try{
-                payment.status = "successful";
-                _context.Payment.Add(payment);
-                _context.SaveChanges();
-            }
-            catch{
-                payment.status = "unsuccessful";
-                _context.Payment.Add(payment);
-                _context.SaveChanges();
-            }
+            payment.status = bankSimulation(payment.cardNumber, payment.amount);
+            _paymentContext.Payment.Add(payment);
+            _paymentContext.SaveChanges();
             
             return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Status: " + payment.status};
         }
