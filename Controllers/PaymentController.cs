@@ -11,13 +11,7 @@ namespace PaymentGateway.Controllers{
 
         public PaymentsController(PaymentContext context) => _context = context;
 
-        [HttpGet("{id}")]
-        public ActionResult<IEnumerable<string>> GetPayment(int id){
-            var payment = _context.Payment.Find(id);
-            if (payment == null){
-                return new string[] {"Incorrect identifier. Please try again!"};
-            }
-            string cardNumber = payment.cardNumber;
+        public string maskCardNumber(string cardNumber){
             string masked = "";
 
             for (int i = 0; i < cardNumber.Length; i++){
@@ -26,8 +20,36 @@ namespace PaymentGateway.Controllers{
                     masked += " ";
                 }
             }
+            return masked;
+        }
 
-            return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Card Number: " + masked, "Expiry Date: " + payment.expiryDate, "Amount " + payment.amount, "Currency: " + payment.currency, "CVV: " + payment.cvv, "Status: " + payment.status};
+        //GET: /api/paymentgateway/n
+        [HttpGet("{id}")]
+        public ActionResult<IEnumerable<string>> GetPayment(int id){
+            var payment = _context.Payment.Find(id);
+            if (payment == null){
+                return new string[] {"Incorrect identifier. Please try again!"};
+            }
+            string cardNumber = maskCardNumber(payment.cardNumber);
+
+            return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Card Number: " + cardNumber, "Expiry Date: " + payment.expiryDate, "Amount " + payment.amount, "Currency: " + payment.currency, "CVV: " + payment.cvv, "Status: " + payment.status};
+        }
+
+        //POST: /api/paymentgateway
+        [HttpPost]
+        public ActionResult<IEnumerable<string>> PostPayment(Payment payment){
+            try{
+                payment.status = "successful";
+                _context.Payment.Add(payment);
+                _context.SaveChanges();
+            }
+            catch{
+                payment.status = "unsuccessful";
+                _context.Payment.Add(payment);
+                _context.SaveChanges();
+            }
+            
+            return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Status: " + payment.status};
         }
     }
 }
