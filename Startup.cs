@@ -32,6 +32,7 @@ namespace PaymentGateway{
             services.AddAuthentication(IdentityConstants.ApplicationScheme);
             services.AddDbContext<PaymentContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));
             services.AddDbContext<ShopperContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));
+            services.AddDbContext<LogContext>(opt => opt.UseSqlServer(Configuration["Data:PaymentGatewayAPIConnection:ConnectionString"]));
             services.AddMvc(options => options.EnableEndpointRouting = false);
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Latest);
         }

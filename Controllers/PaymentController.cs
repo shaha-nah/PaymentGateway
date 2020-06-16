@@ -12,10 +12,12 @@ namespace PaymentGateway.Controllers{
     public class PaymentsController : ControllerBase{
         private readonly PaymentContext _paymentContext;
         private readonly ShopperContext _shopperContext;
+        private readonly LogContext _logContext;
 
-        public PaymentsController(PaymentContext paymentContext, ShopperContext shopperContext){
+        public PaymentsController(PaymentContext paymentContext, ShopperContext shopperContext, LogContext logContext){
             _paymentContext = paymentContext;
             _shopperContext = shopperContext;
+            _logContext = logContext;
         }
   
 
@@ -57,6 +59,10 @@ namespace PaymentGateway.Controllers{
             }
             string cardNumber = maskCardNumber(payment.cardNumber);
 
+            Log log = new Log(DateTime.Now, "Merchant viewed payment " + payment.paymentID);
+            _logContext.Log.Add(log);
+            _logContext.SaveChanges();
+
             return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Card Number: " + cardNumber, "Expiry Date: " + payment.expiryDate, "Amount " + payment.amount, "Currency: " + payment.currency, "CVV: " + payment.cvv, "Status: " + payment.status};
         }
 
@@ -67,6 +73,10 @@ namespace PaymentGateway.Controllers{
             payment.status = bankSimulation(payment);
             _paymentContext.Payment.Add(payment);
             _paymentContext.SaveChanges();
+
+            Log log = new Log(DateTime.Now, "Merchant processed payment " + payment.paymentID);
+            _logContext.Log.Add(log);
+            _logContext.SaveChanges();
             
             return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Status: " + payment.status};
         }
