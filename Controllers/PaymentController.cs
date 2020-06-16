@@ -4,6 +4,7 @@ using PaymentGateway.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
 using System;
+using Microsoft.AspNetCore.Authorization;
 
 namespace PaymentGateway.Controllers{
     [Route("api/PaymentGateway")]
@@ -48,6 +49,7 @@ namespace PaymentGateway.Controllers{
 
         //GET: /api/paymentgateway/n
         [HttpGet("{id}")]
+        [Authorize]
         public ActionResult<IEnumerable<string>> GetPayment(int id){
             var payment = _paymentContext.Payment.Find(id);
             if (payment == null){
@@ -60,6 +62,7 @@ namespace PaymentGateway.Controllers{
 
         //POST: /api/paymentgateway
         [HttpPost]
+        [Authorize]
         public ActionResult<IEnumerable<string>> PostPayment(Payment payment){
             payment.status = bankSimulation(payment);
             _paymentContext.Payment.Add(payment);

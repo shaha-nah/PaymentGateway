@@ -50,3 +50,11 @@
 /home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/runtimes/win/lib/netcoreapp2.0/System.Runtime.Caching.dll
 /home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/runtimes/win/lib/netstandard2.0/System.Security.Cryptography.ProtectedData.dll
 /home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.EntityFrameworkCore.Design.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.AspNetCore.Authentication.JwtBearer.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.JsonWebTokens.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Logging.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Protocols.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Protocols.OpenIdConnect.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Microsoft.IdentityModel.Tokens.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/Newtonsoft.Json.dll
+/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/bin/Debug/netcoreapp3.1/System.IdentityModel.Tokens.Jwt.dll
