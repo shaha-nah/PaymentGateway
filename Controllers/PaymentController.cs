@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using PaymentGateway.Models;
 using Microsoft.EntityFrameworkCore;
 using System.Linq;
+using System;
 
 namespace PaymentGateway.Controllers{
     [Route("api/PaymentGateway")]
@@ -29,18 +30,19 @@ namespace PaymentGateway.Controllers{
             return masked;
         }
 
-        public string bankSimulation(string cardNumber, double amount){
-           Shopper shopper = (  from s in _shopperContext.Shopper
-                                where s.cardNumber == cardNumber
-                                select s).FirstOrDefault<Shopper>();
-           if (shopper == null){
-               return "unsuccessful";
-           }
-           else{
-               if (shopper.credit - amount < 0){
-                   return "unsuccessful";
-               }
-           }
+        public string bankSimulation(Payment payment){
+           Shopper shopper = (  from    s in _shopperContext.Shopper
+                                where   s.cardNumber == payment.cardNumber
+                                select  s).FirstOrDefault<Shopper>();
+            if (shopper == null){
+                return "unsuccessful";
+            }
+            if (shopper.credit - payment.amount < 0){
+                return "unsuccessful";
+            }
+            if (Convert.ToDateTime(payment.expiryDate) < DateTime.Now){
+                return "unsuccessful";
+            }
            return "successful";
         }
 
@@ -59,7 +61,7 @@ namespace PaymentGateway.Controllers{
         //POST: /api/paymentgateway
         [HttpPost]
         public ActionResult<IEnumerable<string>> PostPayment(Payment payment){
-            payment.status = bankSimulation(payment.cardNumber, payment.amount);
+            payment.status = bankSimulation(payment);
             _paymentContext.Payment.Add(payment);
             _paymentContext.SaveChanges();
             
