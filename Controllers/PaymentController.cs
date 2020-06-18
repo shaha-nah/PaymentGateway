@@ -33,22 +33,28 @@ namespace PaymentGateway.Controllers{
             return masked;
         }
 
-        public string bankSimulation(Payment payment){
+        public int bankSimulation(Payment payment){
            Shopper shopper = (  from    s in _shopperContext.Shopper
                                 where   s.cardNumber == payment.cardNumber
                                 select  s).FirstOrDefault<Shopper>();
             if (shopper == null){
-                return "unsuccessful";
+                return 500;
             }
             if (shopper.credit - payment.amount < 0){
-                return "unsuccessful";
+                return 402;
             }
             if (Convert.ToDateTime(payment.expiryDate) < DateTime.Now){
-                return "unsuccessful";
+                return 402;
             }
-           return "successful";
+           return 200;
         }
 
+        public string obtainStatus(Payment payment){
+            if (bankSimulation(payment) == 200){
+                return "successful";
+            }
+            return "unsuccessful";
+        }
         //GET: /api/paymentgateway/n
         [HttpGet("{id}")]
         [Authorize]
@@ -70,7 +76,7 @@ namespace PaymentGateway.Controllers{
         [HttpPost]
         [Authorize]
         public ActionResult<IEnumerable<string>> PostPayment(Payment payment){
-            payment.status = bankSimulation(payment);
+            payment.status = obtainStatus(payment);
             _paymentContext.Payment.Add(payment);
             _paymentContext.SaveChanges();
 
