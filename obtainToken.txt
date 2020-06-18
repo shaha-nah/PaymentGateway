@@ -1,0 +1,5 @@
+Run command:
+curl --request POST \
+  --url https://dev-0qg5ddi7.us.auth0.com/oauth/token \
+  --header 'content-type: application/json' \
+  --data '{"client_id":"Z2KUVQmQ0XByM5Ev5t5u2C4YmCi9fd8G","client_secret":"czEjCISGR367bMTB9eVGz_XGLxXJ8p9X9HH1ZYBCzZqhHik-ODXdFZk2nO79qQFS","audience":"paymentgateway","grant_type":"client_credentials"}'
