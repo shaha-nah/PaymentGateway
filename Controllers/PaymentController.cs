@@ -76,15 +76,18 @@ namespace PaymentGateway.Controllers{
         [HttpPost]
         [Authorize]
         public ActionResult<IEnumerable<string>> PostPayment(Payment payment){
-            payment.status = obtainStatus(payment);
-            _paymentContext.Payment.Add(payment);
-            _paymentContext.SaveChanges();
+            if (payment.cardNumber != null && payment.expiryDate != null && payment.amount > 0 && payment.currency != null && payment.cvv != null){
+                payment.status = obtainStatus(payment);
+                _paymentContext.Payment.Add(payment);
+                _paymentContext.SaveChanges();
 
-            Log log = new Log(DateTime.Now, "Merchant processed payment " + payment.paymentID);
-            _logContext.Log.Add(log);
-            _logContext.SaveChanges();
-            
-            return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Status: " + payment.status};
+                Log log = new Log(DateTime.Now, "Merchant processed payment " + payment.paymentID);
+                _logContext.Log.Add(log);
+                _logContext.SaveChanges();
+                
+                return new string[] {"Payment ID: " + payment.paymentID.ToString(), "Status: " + payment.status};
+            }
+            return new string[] {"Some fields are missing!"};
         }
     }
 }
