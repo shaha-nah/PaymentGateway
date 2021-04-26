@@ -5712,11 +5712,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/PaymentGateway.csproj",
+      "projectUniqueName": "/run/media/shahanah/Files/Code/PaymentGateway/PaymentGateway.csproj",
       "projectName": "PaymentGateway",
-      "projectPath": "/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/PaymentGateway.csproj",
+      "projectPath": "/run/media/shahanah/Files/Code/PaymentGateway/PaymentGateway.csproj",
       "packagesPath": "/home/shahanah/.nuget/packages/",
-      "outputPath": "/home/shahanah/Code/Checkout .Net Challenge/code/PaymentGateway/obj/",
+      "outputPath": "/run/media/shahanah/Files/Code/PaymentGateway/obj/",
       "projectStyle": "PackageReference",
       "configFilePaths": [
         "/home/shahanah/.nuget/NuGet/NuGet.Config"
@@ -5729,6 +5729,7 @@
       },
       "frameworks": {
         "netcoreapp3.1": {
+          "targetAlias": "netcoreapp3.1",
           "projectReferences": {}
         }
       },
@@ -5740,6 +5741,7 @@
     },
     "frameworks": {
       "netcoreapp3.1": {
+        "targetAlias": "netcoreapp3.1",
         "dependencies": {
           "Microsoft.AspNetCore.Authentication.JwtBearer": {
             "target": "Package",
@@ -5770,6 +5772,20 @@
         ],
         "assetTargetFallback": true,
         "warn": true,
+        "downloadDependencies": [
+          {
+            "name": "Microsoft.AspNetCore.App.Ref",
+            "version": "[3.1.10, 3.1.10]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Host.linux-x64",
+            "version": "[3.1.14, 3.1.14]"
+          },
+          {
+            "name": "Microsoft.NETCore.App.Ref",
+            "version": "[3.1.0, 3.1.0]"
+          }
+        ],
         "frameworkReferences": {
           "Microsoft.AspNetCore.App": {
             "privateAssets": "none"
@@ -5778,7 +5794,7 @@
             "privateAssets": "all"
           }
         },
-        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/3.1.103/RuntimeIdentifierGraph.json"
+        "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/5.0.202/RuntimeIdentifierGraph.json"
       }
     }
   }
